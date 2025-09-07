@@ -1,0 +1,10 @@
+{
+  "name": "Leetcode Tracker",
+  "descriptions": "Extension to automate tracking finished leetcode problems",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "extension.html"
+  },
+  "permissions": ["activeTab", "scripting", "<all_urls>"]
+}
