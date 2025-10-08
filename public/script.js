@@ -32,14 +32,10 @@ document.getElementById("scrape-button").addEventListener("click", async () => {
     return { title, difficulty, topics };
   }
 
-  chrome.scripting
-    .executeScript({
-      target: { tabId },
-      func: scrapeLeetCode,
-    })
-    .then(async (results) => {
-      console.log("success script return");
-      const { title, difficulty, topics } = results[0].result;
-      console.log(title, difficulty, topics);
-    });
+  const results = await chrome.scripting.executeScript({
+    target: { tabId },
+    func: scrapeLeetCode,
+  });
+
+  const { title, difficulty, topics } = results[0].result;
 });
