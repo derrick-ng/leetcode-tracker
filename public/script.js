@@ -14,10 +14,32 @@ document.getElementById("scrape-button").addEventListener("click", async () => {
 
   const { tabId, tabUrl } = await getCurrentTabInfo();
   const urlWithoutProtocol = tabUrl.split("https://")[1];
-  const url = urlWithoutProtocol.split("/description/")[0]
-  console.log(url)
-
+  const url = urlWithoutProtocol.split("/description/")[0];
 
   const date = getDate();
-  console.log("getDate", date);
+
+  function scrapeLeetCode() {
+    console.log("script injected");
+
+    const title = document.querySelector(".text-title-large")?.innerText;
+
+    const difficulty = document.querySelector(".flex.gap-1 > div.relative.inline-flex.items-center")?.innerText;
+
+    const topicsParentEl = document.querySelector(".overflow-hidden.transition-all");
+    const topicsLink = topicsParentEl.querySelectorAll("a");
+    const topics = Array.from(topicsLink).map((topic) => topic.innerText);
+
+    return { title, difficulty, topics };
+  }
+
+  chrome.scripting
+    .executeScript({
+      target: { tabId },
+      func: scrapeLeetCode,
+    })
+    .then(async (results) => {
+      console.log("success script return");
+      const { title, difficulty, topics } = results[0].result;
+      console.log(title, difficulty, topics);
+    });
 });
